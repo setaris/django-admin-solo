@@ -378,5 +378,5 @@ class ChangeList(object):
 
     def url_for_result(self, result):
         pk = getattr(result, self.pk_attname)
-        return self.model_admin.go_to_view('change', result,
+        return self.model_admin.get_url('change', result,
             site=self.model_admin.admin_site)
