@@ -364,6 +364,31 @@ class ModelAdmin(BaseModelAdmin):
 
         return inline_instances
 
+    def get_url(self, view_type, obj=None, site=None):
+        """ Gets the admin url to any of the CRUD or history views for this
+        model.
+        """
+
+        opts = self.model._meta
+        args = []
+        if view_type in ('change', 'delete', 'history'):
+            if obj:
+                args.append(obj.pk)
+            else:
+                raise ValueError('obj must be not None for view_types of '
+                    'change, delete or history.')
+        if site:
+            current_app = site.name
+        else:
+            current_app = self.admin_site.name
+        return reverse('admin:%s_%s_%s' %
+            (opts.app_label, opts.module_name, view_type),
+            args=args,
+            current_app=current_app)
+
+    def go_to_view(self, view_type, obj=None):
+        return HttpResponseRedirect(self.get_url(view_type, obj))
+
     def get_urls(self):
         from django.conf.urls import patterns, url
 
@@ -807,10 +832,7 @@ class ModelAdmin(BaseModelAdmin):
             msg = _('The %(name)s "%(obj)s" was added successfully. You may edit it again below.') % msg_dict
             self.message_user(request, msg)
             if post_url_continue is None:
-                post_url_continue = reverse('admin:%s_%s_change' %
-                                            (opts.app_label, opts.module_name),
-                                            args=(pk_value,),
-                                            current_app=self.admin_site.name)
+                post_url_continue = self.get_url('change', obj)
             else:
                 try:
                     post_url_continue = post_url_continue % pk_value
@@ -859,16 +881,11 @@ class ModelAdmin(BaseModelAdmin):
         elif "_saveasnew" in request.POST:
             msg = _('The %(name)s "%(obj)s" was added successfully. You may edit it again below.') % msg_dict
             self.message_user(request, msg)
-            return HttpResponseRedirect(reverse('admin:%s_%s_change' %
-                                        (opts.app_label, opts.module_name),
-                                        args=(pk_value,),
-                                        current_app=self.admin_site.name))
+            return self.go_to_view('change', obj)
         elif "_addanother" in request.POST:
             msg = _('The %(name)s "%(obj)s" was changed successfully. You may add another %(name)s below.') % msg_dict
             self.message_user(request, msg)
-            return HttpResponseRedirect(reverse('admin:%s_%s_add' %
-                                        (opts.app_label, opts.module_name),
-                                        current_app=self.admin_site.name))
+            return self.go_to_view('add', obj)
         else:
             msg = _('The %(name)s "%(obj)s" was changed successfully.') % msg_dict
             self.message_user(request, msg)
@@ -881,9 +898,7 @@ class ModelAdmin(BaseModelAdmin):
         """
         opts = self.model._meta
         if self.has_change_permission(request, None):
-            post_url = reverse('admin:%s_%s_changelist' %
-                               (opts.app_label, opts.module_name),
-                               current_app=self.admin_site.name)
+            post_url = self.get_url('changelist')
         else:
             post_url = reverse('admin:index',
                                current_app=self.admin_site.name)
@@ -896,9 +911,7 @@ class ModelAdmin(BaseModelAdmin):
         """
         opts = self.model._meta
         if self.has_change_permission(request, None):
-            post_url = reverse('admin:%s_%s_changelist' %
-                               (opts.app_label, opts.module_name),
-                               current_app=self.admin_site.name)
+            post_url = self.get_url('changelist')
         else:
             post_url = reverse('admin:index',
                                current_app=self.admin_site.name)
@@ -1074,9 +1087,7 @@ class ModelAdmin(BaseModelAdmin):
             raise Http404(_('%(name)s object with primary key %(key)r does not exist.') % {'name': force_text(opts.verbose_name), 'key': escape(object_id)})
 
         if request.method == 'POST' and "_saveasnew" in request.POST:
-            return self.add_view(request, form_url=reverse('admin:%s_%s_add' %
-                                    (opts.app_label, opts.module_name),
-                                    current_app=self.admin_site.name))
+            return self.add_view(request, form_url=self.get_url('add'))
 
         ModelForm = self.get_form(request, obj)
         formsets = []
@@ -1337,9 +1348,7 @@ class ModelAdmin(BaseModelAdmin):
             if not self.has_change_permission(request, None):
                 return HttpResponseRedirect(reverse('admin:index',
                                                     current_app=self.admin_site.name))
-            return HttpResponseRedirect(reverse('admin:%s_%s_changelist' %
-                                        (opts.app_label, opts.module_name),
-                                        current_app=self.admin_site.name))
+            return self.go_to_view('changelist')
 
         object_name = force_text(opts.verbose_name)
 

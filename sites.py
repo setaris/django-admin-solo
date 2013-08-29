@@ -358,12 +358,14 @@ class AdminSite(object):
                     }
                     if perms.get('change', False):
                         try:
-                            model_dict['admin_url'] = reverse('admin:%s_%s_changelist' % info, current_app=self.name)
+                            model_dict['admin_url'] = model_admin.get_url('changelist')
+                            #model_dict['admin_url'] = reverse('admin:%s_%s_changelist' % info, current_app=self.name)
                         except NoReverseMatch:
                             pass
                     if perms.get('add', False):
                         try:
-                            model_dict['add_url'] = reverse('admin:%s_%s_add' % info, current_app=self.name)
+                            model_dict['admin_url'] = model_admin.get_url('add')
+                            #model_dict['add_url'] = reverse('admin:%s_%s_add' % info, current_app=self.name)
                         except NoReverseMatch:
                             pass
                     if app_label in app_dict:
@@ -412,12 +414,16 @@ class AdminSite(object):
                         }
                         if perms.get('change', False):
                             try:
-                                model_dict['admin_url'] = reverse('admin:%s_%s_changelist' % info, current_app=self.name)
+                                model_dict['admin_url'] = \
+                                    model_admin.get_url('changelist')
+                                #model_dict['admin_url'] = reverse('admin:%s_%s_changelist' % info, current_app=self.name)
                             except NoReverseMatch:
                                 pass
                         if perms.get('add', False):
                             try:
-                                model_dict['add_url'] = reverse('admin:%s_%s_add' % info, current_app=self.name)
+                                model_dict['admin_url'] = \
+                                    model_admin.get_url('add')
+                                #model_dict['add_url'] = reverse('admin:%s_%s_add' % info, current_app=self.name)
                             except NoReverseMatch:
                                 pass
                         if app_dict:
