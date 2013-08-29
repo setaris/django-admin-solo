@@ -386,8 +386,8 @@ class ModelAdmin(BaseModelAdmin):
             args=args,
             current_app=current_app)
 
-    def go_to_view(self, view_type, obj=None):
-        return HttpResponseRedirect(self.get_url(view_type, obj))
+    def go_to_view(self, *args, **kwargs):
+        return HttpResponseRedirect(self.get_url(*args, **kwargs))
 
     def get_urls(self):
         from django.conf.urls import patterns, url
