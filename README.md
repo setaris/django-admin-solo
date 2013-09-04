@@ -1,4 +1,4 @@
-django-admin
-============
+django-admin-solo
+=================
 
-Just Django admin as its own package.
+Just Django admin with some refactoring to make it DRYer.
