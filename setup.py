@@ -2,15 +2,13 @@ import sys
 
 from setuptools import setup, find_packages
 
-from admin import __version__
-
 install_requires = [
     'django >= 1.5',
 ]
 
 setup(
     name = "django-admin-solo",
-    version = __version__,
+    version = '1.5.3.1',
     description = "Just Django admin with some refactoring to make it DRYer.",
     url = "https://github.com/setaris/django-admin-solo",
     author = "Setaris",
