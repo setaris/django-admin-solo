@@ -12,9 +12,9 @@ from django.core.exceptions import ImproperlyConfigured, ValidationError
 from django.utils.encoding import smart_text, force_text
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
-from django.contrib.admin.util import (get_model_from_relation,
+from admin.util import (get_model_from_relation,
     reverse_field_path, get_limit_choices_to_from_path, prepare_lookup_value)
-from django.contrib.admin.options import IncorrectLookupParameters
+from admin.options import IncorrectLookupParameters
 
 class ListFilter(object):
     title = None  # Human-readable title to appear in the right sidebar.
@@ -189,7 +189,7 @@ class RelatedFieldListFilter(FieldListFilter):
         return [self.lookup_kwarg, self.lookup_kwarg_isnull]
 
     def choices(self, cl):
-        from django.contrib.admin.views.main import EMPTY_CHANGELIST_VALUE
+        from admin.views.main import EMPTY_CHANGELIST_VALUE
         yield {
             'selected': self.lookup_val is None and not self.lookup_val_isnull,
             'query_string': cl.get_query_string({},
@@ -371,7 +371,7 @@ class AllValuesFieldListFilter(FieldListFilter):
         return [self.lookup_kwarg, self.lookup_kwarg_isnull]
 
     def choices(self, cl):
-        from django.contrib.admin.views.main import EMPTY_CHANGELIST_VALUE
+        from admin.views.main import EMPTY_CHANGELIST_VALUE
         yield {
             'selected': (self.lookup_val is None
                 and self.lookup_val_isnull is None),

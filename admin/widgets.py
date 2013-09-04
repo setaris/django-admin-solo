@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import copy
 
 from django import forms
-from django.contrib.admin.templatetags.admin_static import static
+from admin.templatetags.admin_static import static
 from django.core.urlresolvers import reverse
 from django.forms.widgets import RadioFieldRenderer
 from django.forms.util import flatatt

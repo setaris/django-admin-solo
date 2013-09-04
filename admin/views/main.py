@@ -11,9 +11,9 @@ from django.utils.encoding import force_str, force_text
 from django.utils.translation import ugettext, ugettext_lazy
 from django.utils.http import urlencode
 
-from django.contrib.admin import FieldListFilter
-from django.contrib.admin.options import IncorrectLookupParameters
-from django.contrib.admin.util import (quote, get_fields_from_path,
+from admin import FieldListFilter
+from admin.options import IncorrectLookupParameters
+from admin.util import (quote, get_fields_from_path,
     lookup_needs_distinct, prepare_lookup_value)
 
 # Changelist settings

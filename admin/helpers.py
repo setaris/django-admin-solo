@@ -1,9 +1,9 @@
 from __future__ import unicode_literals
 
 from django import forms
-from django.contrib.admin.util import (flatten_fieldsets, lookup_field,
+from admin.util import (flatten_fieldsets, lookup_field,
     display_for_field, label_for_field, help_text_for_field)
-from django.contrib.admin.templatetags.admin_static import static
+from admin.templatetags.admin_static import static
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.fields.related import ManyToManyRel
@@ -169,8 +169,8 @@ class AdminReadonlyField(object):
                            capfirst(force_text(label)))
 
     def contents(self):
-        from django.contrib.admin.templatetags.admin_list import _boolean_icon
-        from django.contrib.admin.views.main import EMPTY_CHANGELIST_VALUE
+        from admin.templatetags.admin_list import _boolean_icon
+        from admin.views.main import EMPTY_CHANGELIST_VALUE
         field, obj, model_admin = self.field['field'], self.form.instance, self.model_admin
         try:
             f, attr, value = lookup_field(field, obj, model_admin)

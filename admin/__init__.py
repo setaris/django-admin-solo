@@ -2,11 +2,11 @@ __version__ = "1.5.3.1"
 
 # ACTION_CHECKBOX_NAME is unused, but should stay since its import from here
 # has been referenced in documentation.
-from django.contrib.admin.helpers import ACTION_CHECKBOX_NAME
-from django.contrib.admin.options import ModelAdmin, HORIZONTAL, VERTICAL
-from django.contrib.admin.options import StackedInline, TabularInline
-from django.contrib.admin.sites import AdminSite, site
-from django.contrib.admin.filters import (ListFilter, SimpleListFilter,
+from admin.helpers import ACTION_CHECKBOX_NAME
+from admin.options import ModelAdmin, HORIZONTAL, VERTICAL
+from admin.options import StackedInline, TabularInline
+from admin.sites import AdminSite, site
+from admin.filters import (ListFilter, SimpleListFilter,
     FieldListFilter, BooleanFieldListFilter, RelatedFieldListFilter,
     ChoicesFieldListFilter, DateFieldListFilter, AllValuesFieldListFilter)
 

@@ -1,7 +1,7 @@
 from functools import update_wrapper
 from django.http import Http404, HttpResponseRedirect
-from django.contrib.admin import ModelAdmin, actions
-from django.contrib.admin.forms import AdminAuthenticationForm
+from admin import ModelAdmin, actions
+from admin.forms import AdminAuthenticationForm
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.contenttypes import views as contenttype_views
 from django.views.decorators.csrf import csrf_protect
@@ -68,7 +68,7 @@ class AdminSite(object):
 
         # Don't import the humongous validation code unless required
         if admin_class and settings.DEBUG:
-            from django.contrib.admin.validation import validate
+            from admin.validation import validate
         else:
             validate = lambda model, adminclass: None
 
@@ -155,11 +155,11 @@ class AdminSite(object):
         The default implementation checks that LogEntry, ContentType and the
         auth context processor are installed.
         """
-        from django.contrib.admin.models import LogEntry
+        from admin.models import LogEntry
         from django.contrib.contenttypes.models import ContentType
 
         if not LogEntry._meta.installed:
-            raise ImproperlyConfigured("Put 'django.contrib.admin' in your "
+            raise ImproperlyConfigured("Put 'admin' in your "
                 "INSTALLED_APPS setting in order to use the admin application.")
         if not ContentType._meta.installed:
             raise ImproperlyConfigured("Put 'django.contrib.contenttypes' in "
@@ -294,7 +294,7 @@ class AdminSite(object):
             from django.views.i18n import javascript_catalog
         else:
             from django.views.i18n import null_javascript_catalog as javascript_catalog
-        return javascript_catalog(request, packages=['django.conf', 'django.contrib.admin'])
+        return javascript_catalog(request, packages=['django.conf', 'admin'])
 
     @never_cache
     def logout(self, request, extra_context=None):
